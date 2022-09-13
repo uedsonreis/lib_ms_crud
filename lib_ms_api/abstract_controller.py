@@ -63,7 +63,7 @@ class AbstractController(ABC):
 
         if error_msg is None:
             record = self._from_json(body)
-            record.modifier_user = request.logged['nickname']
+            record.modifier_user = request.logged['nickname'] if "logged" in request else None
 
             if record is not None:
                 record_db = self._get_service().create(record)
@@ -78,7 +78,7 @@ class AbstractController(ABC):
 
     def update(self, id: int):
         record = self._from_json(request.get_json())
-        record.modifier_user = request.logged['nickname']
+        record.modifier_user = request.logged['nickname'] if "logged" in request else None
         record_db = self._get_service().update(id, record)
 
         if record_db is None:
