@@ -26,8 +26,6 @@ class AbstractRepository(ABC):
     def save(self, record):
         if record.id is None:
             self.get_database().session.add(record)
-            self.get_database().session.commit()
-            return record
         else:
             record.modified = datetime.now()
 
