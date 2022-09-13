@@ -34,7 +34,7 @@ class AbstractController(ABC):
         pass
 
     @abstractmethod
-    def _valid_to_create(self, json) -> bool:
+    def _valid_to_create(self, json) -> str:
         pass
 
     @abstractmethod
@@ -59,7 +59,9 @@ class AbstractController(ABC):
     def store(self):
         body = request.get_json()
 
-        if self._valid_to_create(body):
+        error_msg = self._valid_to_create(body)
+
+        if error_msg is None:
             record = self._from_json(body)
             record.modifier_user = request.logged['nickname']
 
@@ -72,7 +74,7 @@ class AbstractController(ABC):
                     dto = self.parser_to_dto(record_db)
                     return jsonify(dto.__dict__), 201
 
-        return "Data to create the Record is not valid!", 400
+        return error_msg, 400
 
     def update(self, id: int):
         record = self._from_json(request.get_json())
