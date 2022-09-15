@@ -1,3 +1,5 @@
-build
 dist
+build
+.idea
+__pycache__
 lib_ms_api.egg-info
